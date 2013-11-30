@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse, Http404
 # from django.views.decorators.csrf import ensure_csrf_cookie
 
-from chat.models import Room, Message
+from chat.models import Message
 
 
 @login_required
@@ -18,15 +18,10 @@ def index(request):
 # @ensure_csrf_cookie
 def chat(request, user):
     template_name = 'chat/chat.html'
-    
-    user = User.objects.get(username=user)
-    users = []
-    users.append(request.user.id)
-    users.append(user.id)
 
-    room, created = Room.objects.get_or_create(user_list__id__in=users)
-    
-    return render(request, template_name, {"room": room.id})
+    u = User.objects.get(username=user)
+ 
+    return render(request, template_name, {"room": u.id})
     
 # AJAX views, used by the chat system.
 @login_required
@@ -35,9 +30,8 @@ def send(request):
         raise Http404
     p = request.POST
 
-    r = Room.objects.get(id=int(p['id']))
-
-    r.say(request.user, p['message'])
+    u = User.objects.get(id=int(p['id']))
+    r = Message.objects.create(to_user=u, from_user=request.user, message=p['message'], type='m')
     return HttpResponse('')
 
 @login_required
@@ -46,11 +40,10 @@ def sync(request):
         raise Http404
     p = request.POST
     
-    r = Room.objects.get(id=int(p['id']))
+    u = User.objects.get(id=int(p['id']))
+    r = Message.objects.filter(to_user=u, from_user=request.user).order_by('-timestamp')[0]
 
-    last_message_id = r.last_message_id()
-
-    return HttpResponse(jsonify({'last_message_id' : last_message_id}))
+    return HttpResponse(jsonify({'last_message_id' : r.id}))
 
 @login_required
 def receive(request):
@@ -58,16 +51,10 @@ def receive(request):
         raise Http404
     p = request.POST
 
-    r = Room.objects.get(id=int(p['id']))
+    u = User.objects.get(id=int(p['id']))
+    r = Message.objects.filter(to_user=u, from_user=request.user, pk__gt=int(p['offset'])).order_by('-timestamp')
 
-    try:
-        offset = int(p['offset'])
-    except:
-        offset = 0
-
-    messages = r.messages(offset)
-
-    return HttpResponse(jsonify(messages, ['id','author','message','type']))
+    return HttpResponse(jsonify(r, ['id','from_user','message','type']))
 
 @login_required
 def join(request):
@@ -75,10 +62,6 @@ def join(request):
         raise Http404
     p = request.POST
 
-    r = Room.objects.get(id=int(p['id']))
-    
-    r.join(request.user)
-    
     return HttpResponse('')
 
 
@@ -87,10 +70,6 @@ def leave(request):
     if request.method != 'POST':
         raise Http404
     p = request.POST
-
-    r = Room.objects.get(id=int(p['id']))
-    
-    r.leave(request.user)
 
     return HttpResponse('')
 

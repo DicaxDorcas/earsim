@@ -100,11 +100,11 @@ function get_messages() {
 				if (m.type == 's')
 					$('#chat-messages').append('<div class="system">' + m.message + '</div>');
 				else if (m.type == 'm')
-					$('#chat-messages').append('<div class="message"><div class="author">'+m.author+'</div>'+ m.message + '</div>');
+					$('#chat-messages').append('<div class="message"><div class="author">'+m.from_user+'</div>'+ m.message + '</div>');
 				else if (m.type == 'j')
-					$('#chat-messages').append('<div class="join">'+m.author+' has joined</div>');
+					$('#chat-messages').append('<div class="join">'+m.from_user+' has joined</div>');
 				else if (m.type == 'l')
-					$('#chat-messages').append('<div class="leave">'+m.author+' has left</div>');
+					$('#chat-messages').append('<div class="leave">'+m.from_user+' has left</div>');
                                 last_received = m.id;
 			})
 
