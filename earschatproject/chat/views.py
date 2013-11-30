@@ -1,6 +1,6 @@
 import json
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse, Http404
@@ -16,11 +16,14 @@ def index(request):
     return render(request, template_name)
 
 # @ensure_csrf_cookie
+@login_required
 def chat(request, user):
     template_name = 'chat/chat.html'
 
-    u = User.objects.get(username=user)
- 
+    try:
+        u = User.objects.get(username=user)
+    except:
+        return redirect('index')
     return render(request, template_name, {"room": u.id})
     
 # AJAX views, used by the chat system.
@@ -41,7 +44,8 @@ def sync(request):
     p = request.POST
     
     u = User.objects.get(id=int(p['id']))
-    r = Message.objects.filter(to_user=u, from_user=request.user).order_by('-timestamp')[0]
+    r = Message.objects.filter(to_user=u, from_user=request.user, pk__gt=int(p['offset'])).order_by('-timestamp') | Message.objects.filter(to_user=request.user, from_user=u, pk__gt=int(p['offset'])).order_by('-timestamp')
+    r = r[0]
 
     return HttpResponse(jsonify({'last_message_id' : r.id}))
 
@@ -52,8 +56,8 @@ def receive(request):
     p = request.POST
 
     u = User.objects.get(id=int(p['id']))
-    r = Message.objects.filter(to_user=u, from_user=request.user, pk__gt=int(p['offset'])).order_by('-timestamp')
-
+    r = Message.objects.filter(to_user=u, from_user=request.user, pk__gt=int(p['offset'])).order_by('-timestamp') | Message.objects.filter(to_user=request.user, from_user=u, pk__gt=int(p['offset'])).order_by('-timestamp')    
+    
     return HttpResponse(jsonify(r, ['id','from_user','message','type']))
 
 @login_required
