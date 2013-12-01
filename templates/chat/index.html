@@ -1,6 +1,10 @@
+{% extends 'base.html' %}
+
+{% block title %}Friends{% endblock title %}
+{% block header %}Friends{% endblock header %}
+{% block content %}
 {% for user in users %}
-<div>
-<a href="/chat/{{user.username}}/" class="friend">{{ user.username }} </a>
-</div>
+<a href="/chat/{{user.username}}/" class="no_link" id="item">{{ user.username }} </a>
 {% endfor %}
 <br><a href="{% url 'logout' %}">Log out</a>
+{% endblock content %}
