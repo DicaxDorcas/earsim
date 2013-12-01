@@ -7,6 +7,7 @@
     "128": "http://placehold.it/128x128",
     "90": "http://placehold.it/90x90"
   },
+  "orientation": ["portrait"],
   "developer": {
     "name": "Ross Walker (webmaster@ears.im)",
     "url": "http://rosswalker.me"
