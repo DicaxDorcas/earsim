@@ -1,9 +1,9 @@
 {
   "name": "Ears.IM",
   "description": "Chat, away from prying ears.",
-  "launch_path": "/",
+  "launch_path": "https://ears.im/",
   "icons": {
-    "128": "http://placehold.it/128x128"
+    "60": "http://placehold.it/60x60"
   },
   "developer": {
     "name": "Ross Walker (webmaster@ears.im)",
