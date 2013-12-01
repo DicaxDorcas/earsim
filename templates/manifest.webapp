@@ -4,8 +4,8 @@
   "launch_path": "/",
   "icons": {
     "60": "http://placehold.it/60x60",
-    "128": "http://placehold.it/128x128",
-    "90": "http://placehold.it/90x90"
+    "120": "http://placehold.it/120x120",
+    "90": "http://placehold.it/90x90",
   },
   "developer": {
     "name": "Ross Walker (webmaster@ears.im)",
