@@ -2,6 +2,12 @@
 
 {% block title %}{{ u.username }}{% endblock title %}
 {% block header %}{{ u.username }}{% endblock header %}
+{% block footer %}
+<form id="chat-form">
+  <input autocomplete="off" autofocus="autofocus" name="message" type="text" class="message" />
+  <input type="submit" value="Say"/>
+</form>
+{% endblock footer %}
 {% block content %}
 <div id="chat"></div>
 
@@ -59,12 +65,7 @@ function layout_and_bind(html_el_id) {
 		var html = '<div id="chat-messages-container">'+
 		'<div id="chat-messages"> </div>'+
 		'<div id="chat-last"> </div>'+
-		'</div>'+
-		'<form id="chat-form">'+
-		'<input autocomplete="off" autofocus="autofocus" name="message" type="text" class="message" />'+
-                '<input type="submit" value="Say"/>'+
-		'</form>' +
-                '<a href="/">Back</a>';
+		'</div>'
 
 		$("#"+html_el_id).append(html);
 
@@ -117,7 +118,8 @@ function get_messages() {
 				else if (m.type == 'l')
 					$('#chat-messages').append('<div class="leave">'+m.from_user+' has left</div>');
                                 last_received = m.id;
-                                $("html, body").scrollTop($(document).height());
+                                var objDiv = document.getElementById("#content");
+                                objDiv.scrollTop = objDiv.scrollHeight;
                                 missed_messages += 1;
        });
       }

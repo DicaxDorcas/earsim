@@ -9,6 +9,7 @@
     <title>{% block title %}{% endblock title %} - Ears.IM</title>
     <style type="text/css">
       html, body {
+        font-family:Arial, Helvetica, sans-serif; 
         height: 100%;
         width: 100%;
         padding: 0;
@@ -18,8 +19,36 @@
         overflow-y: hidden !important;
       }
       header { 
-        height:50px;
-      } 
+        position:absolute; top:0px; left:0px; height:50px; right:0px;overflow:hidden;
+        background: #e66000; /* Old browsers */
+        background: -moz-linear-gradient(top, #e66000 0%, #bb2200 100%); /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e66000), color-stop(100%,#bb2200)); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(top, #e66000 0%,#bb2200 100%); /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(top, #e66000 0%,#bb2200 100%); /* Opera 11.10+ */
+        background: -ms-linear-gradient(top, #e66000 0%,#bb2200 100%); /* IE10+ */
+        background: linear-gradient(to bottom, #e66000 0%,#bb2200 100%); /* W3C */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e66000', endColorstr='#bb2200',GradientType=0 ); /* IE6-9 */
+        border-bottom:1px solid #000000;
+      }
+      header > p {
+        line-height:0.5rem;
+        font-size: 2.5rem;
+        font-weight: normal;
+        color:#ffffff;
+        margin-left:10px;
+      }
+      #content {
+        position:absolute; top:50px; bottom:50px; left:0px; right:0px; overflow:auto;
+      }
+      #chat-form {
+        background:#ffffff;
+        position:absolute; bottom:0px; height:40px; left:0px; right:0px; overflow:hidden;
+        padding-top:7px; 
+        border-top:2px solid #eee;
+      }
+      #chat-form input {
+        height:20px;
+      }
       #login {
         padding-top:50px;
         text-align:center;
@@ -48,8 +77,10 @@
     </header>
     {% endblock no_header %}
 
+    <div id="content">
     {% block content %}
     {% endblock content %}
+    </div>
 
     {% block no_footer %}
     <footer>
