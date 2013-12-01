@@ -1,7 +1,6 @@
 {
   "name": "Ears.IM",
   "description": "Chat, away from prying ears.",
-  "launch_path": "/",
   "icons": {
     "60": "http://placehold.it/60x60",
     "120": "http://placehold.it/120x120",
