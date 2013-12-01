@@ -4,7 +4,6 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse, Http404
-# from django.views.decorators.csrf import ensure_csrf_cookie
 
 from chat.models import Message
 
@@ -13,7 +12,9 @@ from chat.models import Message
 def index(request):
     template_name = 'chat/index.html'
 
-    return render(request, template_name)
+    u = User.objects.all().exclude(username=request.user.username)
+
+    return render(request, template_name, {"users": u})
 
 # @ensure_csrf_cookie
 @login_required
@@ -24,7 +25,9 @@ def chat(request, user):
         u = User.objects.get(username=user)
     except:
         return redirect('index')
-    return render(request, template_name, {"room": u.id})
+    if u == request.user:
+        return redirect('index')
+    return render(request, template_name, {"room": u.id, "u": u})
     
 # AJAX views, used by the chat system.
 @login_required

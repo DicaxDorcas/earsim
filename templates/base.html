@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html>
+
+  <head>
+    <meta charset="UTF-8" >
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width,user-scalable=no, initial-scale=1">
+
+    <title>{% block title %}{% endblock title %} - Ears.IM</title>
+    <style type="text/css">
+      html, body {
+        height: 100%;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        font-size: 10px;
+        overflow-x: hidden !important;
+        overflow-y: hidden !important;
+      }
+      header { 
+        height:50px;
+      } 
+      #login {
+        padding-top:50px;
+        text-align:center;
+        max-width:400px;
+        margin:0 auto;
+      }
+      #login img {
+        padding-bottom:30px;
+      }
+      #login p {
+        font-weight:700;
+      }
+      #id_username, #id_password, #id_submit {
+        margin:4px; 
+        padding:5px;
+        width:90%;
+        max-width:400px;
+      }
+    </style>
+  </head>
+
+  <body>
+    {% block no_header %}
+    <header>
+      <p>{% block header %}Ears.IM{% endblock header %}</p>
+    </header>
+    {% endblock no_header %}
+
+    {% block content %}
+    {% endblock content %}
+
+    {% block no_footer %}
+    <footer>
+      {% block footer %}
+
+      {% endblock footer %}
+    </footer>
+    {% endblock no_footer %}
+  </body>
+</html>
