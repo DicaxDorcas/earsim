@@ -118,8 +118,6 @@ function get_messages() {
 				else if (m.type == 'l')
 					$('#chat-messages').append('<div class="leave">'+m.from_user+' has left</div>');
                                 last_received = m.id;
-                                var objDiv = document.getElementById("#content");
-                                objDiv.scrollTop = objDiv.scrollHeight;
                                 missed_messages += 1;
        });
       }

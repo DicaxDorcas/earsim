@@ -12,6 +12,37 @@
 <input id="id_password" placeholder="Password" name="password" type="password" />
 <input id="id_submit" type="submit" value="Log In" />
 <input type="hidden" name="next" value="{{ next }}" />
-<a style="font-size:20px" href="/manifest.webapp">Install to FirefoxOS</a>
+<button id="install-btn">Install app</button>
 </form>
+<script>
+var manifest_url = 'https://ears.im/manifest.webapp';
+
+function install(ev) {
+  ev.preventDefault();
+  // define the manifest URL
+  // install the app
+  var installLocFind = navigator.mozApps.install(manifest_url);
+  installLocFind.onsuccess = function(data) {
+    // App is installed, do something
+  };
+  installLocFind.onerror = function() {
+    // App wasn't installed, info is in
+    // installapp.error.name
+    alert(installLocFind.error.name);
+  };
+};
+
+// get a reference to the button and call install() on click if the app isn't already installed. If it is, hide the button.
+var button = document.getElementById('install-btn');
+
+var installCheck = navigator.mozApps.checkInstalled(manifest_url);
+
+installCheck.onsuccess = function() {
+  if(installCheck.result) {
+    button.style.display = "none";
+  } else {
+    button.addEventListener('click', install, false);
+  };
+};
+</script>
 {% endblock content %}
