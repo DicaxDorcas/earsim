@@ -27,7 +27,7 @@ def chat(request, user):
         return redirect('index')
     if u == request.user:
         return redirect('index')
-    return render(request, template_name, {"room": u.id, "u": u})
+    return render(request, template_name, {"room": u.id, "u": u, "username": request.user.username})
     
 # AJAX views, used by the chat system.
 @login_required
