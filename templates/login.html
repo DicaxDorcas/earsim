@@ -12,12 +12,6 @@
 <input id="id_password" placeholder="Password" name="password" type="password" />
 <input id="id_submit" type="submit" value="Log In" />
 <input type="hidden" name="next" value="{{ next }}" />
-<a onclick="install()" href="#">Install to FirefoxOS</a>
+<a href="/manifest.webapp">Install to FirefoxOS</a>
 </form>
-<script>
-function install() {
-  var manifestLocation = "/manifest.webapp";
-  var installRequest = navigator.mozApps.install(manifestLocation);
-}
-</script>
 {% endblock content %}
