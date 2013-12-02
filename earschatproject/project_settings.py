@@ -36,6 +36,11 @@ ROOT_URLCONF = 'urls'
 
 WSGI_APPLICATION = 'wsgi.application'
 
+STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "content"),
+)
+
 # Internationalization
 LANGUAGE_CODE = 'en-gb'
 TIME_ZONE = 'UTC'

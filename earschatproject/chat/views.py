@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -10,6 +11,8 @@ from chat.models import Message
 
 @login_required
 def index(request):
+    request.user.last_login = datetime.now()
+    request.user.save()
     template_name = 'chat/index.html'
 
     u = User.objects.all().exclude(username=request.user.username)
@@ -19,6 +22,8 @@ def index(request):
 # @ensure_csrf_cookie
 @login_required
 def chat(request, user):
+    request.user.last_login = datetime.now()
+    request.user.save()
     template_name = 'chat/chat.html'
 
     try:
@@ -42,23 +47,27 @@ def send(request):
 
 @login_required
 def sync(request):
+    request.user.last_login = datetime.now()
+    request.user.save()
     if request.method != 'POST':
         raise Http404
     p = request.POST
     
     u = User.objects.get(id=int(p['id']))
-    r = Message.objects.filter(to_user=u, from_user=request.user).order_by('-timestamp')[0]
+    r = Message.objects.filter(to_user__in=[u, request.user], from_user__in=[u, request.user]).order_by('-timestamp')[0]
 
     return HttpResponse(jsonify({'last_message_id' : r.id}))
 
 @login_required
 def receive(request):
+    request.user.last_login = datetime.now()
+    request.user.save()
     if request.method != 'POST':
         raise Http404
     p = request.POST
 
     u = User.objects.get(id=int(p['id']))
-    r = Message.objects.filter(to_user=u, from_user=request.user, pk__gt=int(p['offset'])).order_by('-timestamp') | Message.objects.filter(to_user=request.user, from_user=u, pk__gt=int(p['offset'])).order_by('-timestamp')    
+    r = Message.objects.filter(to_user__in=[u, request.user], from_user__in=[u, request.user], pk__gt=int(p['offset'])).order_by('-timestamp')  
     
     return HttpResponse(jsonify(r, ['id','from_user','message','type']))
 
