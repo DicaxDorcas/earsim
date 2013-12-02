@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse, Http404
+from django.utils.html import escape
 
 from chat.models import Message
 
@@ -42,7 +43,7 @@ def send(request):
     p = request.POST
 
     u = User.objects.get(id=int(p['id']))
-    r = Message.objects.create(to_user=u, from_user=request.user, message=p['message'], type='m')
+    r = Message.objects.create(to_user=u, from_user=request.user, message=escape(p['message']), type='m')
     return HttpResponse('')
 
 @login_required
