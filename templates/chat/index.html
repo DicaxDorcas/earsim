@@ -3,6 +3,7 @@
 {% block title %}Friends{% endblock title %}
 {% block header %}Friends{% endblock header %}
 {% block content %}
+<a href="/logout" id="logout"></a>
 {% for user in users %}
 <a href="/chat/{{user.username}}/" class="no_link" id="item">{{ user.username }} </a>
 {% endfor %}

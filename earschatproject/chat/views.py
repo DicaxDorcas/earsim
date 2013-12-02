@@ -54,7 +54,7 @@ def sync(request):
     p = request.POST
     
     u = User.objects.get(id=int(p['id']))
-    r = Message.objects.filter(to_user__in=[u, request.user], from_user__in=[u, request.user]).order_by('-timestamp')[15]
+    r = Message.objects.filter(to_user__in=[u, request.user], from_user__in=[u, request.user]).order_by('-timestamp')[60]
 
     return HttpResponse(jsonify({'last_message_id' : r.id}))
 
