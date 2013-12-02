@@ -16,6 +16,7 @@
 var chat_room_id = undefined;
 var last_received = 0;
 var missed_messages = 0;
+var messages = [];
 var user = "{{ username }}"
 var original_title = document.title;
 /**
@@ -40,6 +41,7 @@ function init_chat(chat_id, html_el_id) {
  * @return
  */
 function sync_messages() {
+    messages = [];
     $.ajax({
         type: 'POST',
         data: {id:window.chat_room_id},
@@ -106,14 +108,19 @@ function get_messages() {
 
 			// add messages
 			$.each(json, function(i,m){
-				if(m.from_user == user) {
-                                    type = "right";
+                                if(messages.indexOf(m.id) >= 0) {
+                                    
                                 } else {
-                                    type = "left";
+				  messages.push(m.id);
+                                  if(m.from_user == user) {
+                                      type = "right";
+                                  } else {
+                                      type = "left";
+                                  }
+                                  $('#chat-messages').append('<div id="' + type + '" class="message">' + m.message + '</div>');
+                                  last_received = m.id;
+                                  missed_messages += 1;
                                 }
-                                $('#chat-messages').append('<div id="' + type + '" class="message">' + m.message + '</div>');
-                                last_received = m.id;
-                                missed_messages += 1;
        });
       }
     });
