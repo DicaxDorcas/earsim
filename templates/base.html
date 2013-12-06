@@ -25,15 +25,16 @@
         text-decoration:none;
         color:black;
       }
-      #right { font-size: 1.8rem; margin:10px; padding:10px; width:90%; position: relative; background: #ffffff; border: 2px solid #000000; } 
+      #right { z-index:9001; font-size: 1.8rem; margin:10px; padding:10px; width:90%; position: relative; background: #ffffff; border: 2px solid #000000; } 
       #right:after, #right:before { left: 100%; top: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
       #right:after { border-color: rgba(255, 255, 255, 0); border-left-color: #ffffff; border-width: 10px; margin-top: -10px; } 
       #right:before { border-color: rgba(0, 0, 0, 0); border-left-color: #000000; border-width: 12px; margin-top: -12px; }
-      #left { font-size: 1.8rem; padding:10px; width:90%; margin:10px; position: relative; background: #d5a0a0; border: 2px solid #f55656; } 
+      #left { z-index:9001; font-size: 1.8rem; padding:10px; width:90%; margin:10px; position: relative; background: #d5a0a0; border: 2px solid #f55656; } 
       #left:after, #left:before { right: 100%; top: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
       #left:after { border-color: rgba(213, 160, 160, 0); border-right-color: #d5a0a0; border-width: 10px; margin-top: -10px; } 
       #left:before { margin-left:15px; border-color: rgba(245, 86, 86, 0); border-right-color: #f55656; border-width: 12px; margin-top: -12px;}
       header {
+        z-index:9999;
         position:absolute; top:0px; left:0px; height:50px; right:0px;overflow:hidden;
         background: #c46702; /* Old browsers */
         background: -moz-linear-gradient(top, #c46702 0%, #b54d16 100%); /* FF3.6+ */
@@ -102,6 +103,7 @@
         font-weight:700;
       }
       #back {
+        z-index:10000;
         display:block;
         position:fixed;
         text-decoration:none;
@@ -118,6 +120,7 @@
       }
       #logout {
         display:block;
+        z-index:10000;
         position:fixed;
         text-decoration:none;
         width:21px;

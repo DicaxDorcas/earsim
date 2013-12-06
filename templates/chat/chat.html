@@ -19,27 +19,13 @@ var missed_messages = 0;
 var messages = [];
 var user = "{{ username }}"
 var original_title = document.title;
-/**
- * Initialize chat:
- * - Set the room id
- * - Generate the html elements (chat box, forms & inputs, etc)
- * - Sync with server
- * @param chat_room_id the id of the chatroom
- * @param html_el_id the id of the html element where the chat html should be placed
- * @return
- */
+
 function init_chat(chat_id, html_el_id) {
 	chat_room_id = chat_id;
 	layout_and_bind(html_el_id);
 	sync_messages();
 }
 
-/**
- * Asks the server which was the last message sent to the room, and stores it's id.
- * This is used so that when joining the user does not request the full list of
- * messages, just the ones sent after he logged in.
- * @return
- */
 function sync_messages() {
     messages = [];
     $.ajax({
@@ -55,10 +41,6 @@ function sync_messages() {
 	setTimeout("get_messages()", 1000);
 }
 
-/**
- * Generate the Chat box's HTML and bind the ajax events
- * @param target_div_id the id of the html element where the chat will be placed
- */
 function layout_and_bind(html_el_id) {
 		// layout stuff
 		var html = '<div id="chat-messages-container">'+
@@ -72,7 +54,9 @@ function layout_and_bind(html_el_id) {
     	$("#chat-form").submit( function () {
             var $inputs = $(this).children('input');
             var values = {};
-
+            if($('#chat-form .message').val() == '') {
+                return false;
+            }
             $inputs.each(function(i,el) {
             	values[el.name] = $(el).val();
             });
@@ -89,9 +73,6 @@ function layout_and_bind(html_el_id) {
 	});
 };
 
-/**
- * Gets the list of messages from the server and appends the messages to the chatbox
- */
 function get_messages() {
     $.ajax({
         type: 'POST',
@@ -120,6 +101,7 @@ function get_messages() {
                                   $('#chat-messages').append('<div id="' + type + '" class="message">' + m.message + '</div>');
                                   last_received = m.id;
                                   missed_messages += 1;
+                                  $("#content").animate({ scrollTop: $("#content")[0].scrollHeight}, 0);
                                 }
        });
       }
