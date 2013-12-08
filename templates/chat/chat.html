@@ -10,6 +10,7 @@
 {% endblock footer %}
 {% block content %}
 <a href="/" id="back"></a>
+<div id="sound"></div>
 <div id="chat"></div>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 <script type="text/javascript">
@@ -20,6 +21,10 @@ var messages = [];
 var user = "{{ username }}"
 var original_title = document.title;
 
+function playSound(filename){   
+                document.getElementById("sound").innerHTML='<audio autoplay="autoplay"><source src="/static/audio/' + filename + '.mp3" type="audio/mpeg" /><source src="/static/audio/' + filename + '.wav" type="audio/wav" /><embed hidden="true" autostart="true" loop="false" src="' + filename +'.mp3" /></audio>';
+
+}
 function init_chat(chat_id, html_el_id) {
 	chat_room_id = chat_id;
 	layout_and_bind(html_el_id);
@@ -96,6 +101,7 @@ function get_messages() {
                                   if(m.from_user == user) {
                                       type = "right";
                                   } else {
+                                      playSound('message');
                                       type = "left";
                                   }
                                   $('#chat-messages').append('<div id="' + type + '" class="message">' + m.message + '</div>');
